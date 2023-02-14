@@ -3,6 +3,8 @@ package com.mrinalgupta.controller;
 import com.mrinalgupta.models.User;
 import com.mrinalgupta.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class UserController {
 
     @Autowired
@@ -20,6 +23,7 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @PreAuthorize("hasRole('ADMIN')") // only ADMIn can invoke this method
     @GetMapping("/{username}")
     public User getUser(@PathVariable("username") String username){
         boolean present=  userService.getUser(username).isPresent();
