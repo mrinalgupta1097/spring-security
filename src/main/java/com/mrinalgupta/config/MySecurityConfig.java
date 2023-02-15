@@ -17,19 +17,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     // Configuring Requests
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.csrf()
-//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-//                .and()
-//                .authorizeRequests()
-////                .antMatchers("/home", "/login", "/register")
-//                .antMatchers("/public/**")
-////                .permitAll()
-//                    .hasRole("NORMAL")
-//                .antMatchers("/users/**").hasRole("ADMIN")
-//                .anyRequest()
-//                .authenticated()
-//                .and()
-//                .httpBasic();
+/*
         http.csrf()
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .and()
@@ -37,12 +25,28 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/home", "/login", "/register")
                 .antMatchers("/public/**")
 //                .permitAll()
+                    .hasRole("NORMAL")
+                .antMatchers("/users/**").hasRole("ADMIN")
+                .anyRequest()
+                .authenticated()
+                .and()
+                .httpBasic();
+*/
+        http.csrf()
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .and()
+                .authorizeRequests()
+                .antMatchers("/signin").permitAll()
+                .antMatchers("/public/**")
                 .hasRole("NORMAL")
                 .antMatchers("/users/**").hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()
-                .formLogin();
+                .formLogin()
+                .loginPage("/signin")
+                .loginProcessingUrl("/dologin")
+                .defaultSuccessUrl("/users/");
 
     }
 
